@@ -1,0 +1,12 @@
+syntax="proto3";
+
+package networking;
+
+option go_package="github.com/genovatix/trustmesh/networking;pb";
+
+message Message {
+    string id = 1;
+    string type = 2;
+    string payload = 3;
+    int64 dateTime = 4;
+}
