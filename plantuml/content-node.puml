@@ -1,0 +1,40 @@
+@startuml
+class ContentNode {
+    +generateContent(params: ContentParams): MultimediaContent
+    +retrieveContent(id: string): MultimediaContent
+    +storeContent(content: MultimediaContent): void
+
+}
+
+class MultimediaContent {
+    +id: string
+    +data: byte[]
+    +metadata: Metadata
+}
+
+class ContentParams {
+    +genre: string
+    +style: string
+    +customParameters: map
+}
+
+class Metadata {
+    +creationDate: date
+    +author: string
+    +tags: string[]
+}
+
+
+interface ContentDeliveryProtocol {
+    +requestContent(id: string, preferences: Preferences): MultimediaContent
+    +optimizeContent(content: MultimediaContent, optimizationParams: OptimizationParams): MultimediaContent
+}
+
+interface ContentGenerationProtocol {
+    +generateContent(requestParams: ContentRequestParams): MultimediaContent
+}
+
+ContentNode ..> ContentDeliveryProtocol : "Implements"
+ContentNode ..> ContentGenerationProtocol : "Implements"
+
+@enduml

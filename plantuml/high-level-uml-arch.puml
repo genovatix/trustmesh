@@ -1,0 +1,84 @@
+@startuml
+
+class ContentNode {
+    +generateContent(params): MultimediaContent
+    +retrieveContent(id): MultimediaContent
+}
+
+class TransactionManager {
+    +createTransaction(data): Transaction
+    +validateTransaction(transaction): boolean
+}
+
+class AIEngine {
+    +improveCode(baseCode): Code
+    +generateSmartContract(params): SmartContract
+}
+
+class SmartContract {
+    +execute(): void
+    +adapt(params): void
+}
+
+class P2PNetwork {
+    +broadcastMessage(message): void
+    +sendMessage(nodeId, message): void
+}
+
+class StateManager {
+    +updateState(transaction): void
+    +getState(): State
+}
+
+class ConsensusModule {
+    +reachConsensus(data): boolean
+}
+
+
+ContentNode --> AIEngine : uses >
+TransactionManager --> StateManager : updates >
+AIEngine --> SmartContract : generates >
+P2PNetwork --> ContentNode : communicates >
+StateManager --> ConsensusModule : verifies >
+    ContentNode ..> AIEngine : "Utilizes for content optimization"
+ContentNode ..> P2PNetwork : "Retrieves/Sends optimized content"
+TransactionManager ..> StateManager : "Queries for current state"
+TransactionManager ..> ConsensusModule : "Submits transactions for consensus"
+AIEngine ..> ContentNode : "Guides content generation"
+AIEngine ..> SmartContract : "Generates/Improves contracts"
+SmartContract ..> AIEngine : "Receives improvement suggestions"
+SmartContract ..> TransactionManager : "Executes transactions based on contract logic"
+P2PNetwork ..> StateManager : "Propagates state changes"
+P2PNetwork ..> ConsensusModule : "Distributes consensus tasks"
+StateManager ..> ConsensusModule : "Verifies state changes"
+
+interface P2PCommunicationProtocol {
+    +broadcastMessage(message: Message): void
+    +sendMessage(nodeId: string, message: Message): void
+}
+
+interface StateManagementProtocol {
+    +updateState(transaction: Transaction): void
+    +getState(): State
+}
+
+interface ConsensusProtocol {
+    +reachConsensus(data: ConsensusData): boolean
+}
+
+P2PNetwork ..> P2PCommunicationProtocol : "Implements"
+StateManager ..> StateManagementProtocol : "Implements"
+ConsensusModule ..> ConsensusProtocol : "Implements"
+
+interface GossipProtocol {
+    +gossipMessage(message: Message): void
+    +receiveMessage(message: Message): void
+}
+
+P2PNetwork ..> GossipProtocol : "Implements"
+
+StateManager -right-> PublishSubscribeProtocol : "Subscribes to transaction updates"
+TransactionManager -left-> PublishSubscribeProtocol : "Publishes transactions"
+ConsensusModule -down-> GossipProtocol : "Propagates consensus data"
+
+@enduml

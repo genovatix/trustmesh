@@ -1,0 +1,29 @@
+@startuml
+class SmartContract {
+    +id: string
+    +code: Code
+    +execute(environment: ExecutionEnvironment): ExecutionResult
+    +adapt(changes: AdaptationParams): void
+}
+
+class ExecutionEnvironment {
+    +currentState: State
+    +transaction: Transaction
+}
+
+class ExecutionResult {
+    +success: boolean
+    +outputs: map
+}
+
+class AdaptationParams {
+    +newConditions: map
+}
+interface SmartContractProtocol {
+    +execute(environment: ExecutionEnvironment): ExecutionResult
+    +adapt(adaptationParams: AdaptationParams): void
+}
+
+SmartContract ..> SmartContractProtocol : "Implements"
+
+@enduml

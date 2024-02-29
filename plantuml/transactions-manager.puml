@@ -1,0 +1,41 @@
+@startuml
+class TransactionManager {
+    +createTransaction(data: TransactionData): Transaction
+    +validateTransaction(transaction: Transaction): boolean
+    +executeTransaction(transaction: Transaction): TransactionResult
+}
+
+class Transaction {
+    +id: string
+    +type: TransactionType
+    +data: TransactionData
+    +timestamp: date
+}
+
+class TransactionData {
+    +contentId: string
+    +operation: string
+    +parameters: map
+}
+
+enum TransactionType {
+    CONTENT_CREATION
+    CONTENT_UPDATE
+    CONTENT_TRANSFER
+}
+
+class TransactionResult {
+    +success: boolean
+    +message: string
+    +transactionId: string
+}
+
+interface TransactionProtocol {
+    +createTransaction(transactionData: TransactionData): Transaction
+    +validateTransaction(transaction: Transaction): boolean
+    +executeTransaction(transaction: Transaction): TransactionResult
+}
+
+TransactionManager ..> TransactionProtocol : "Implements"
+
+@enduml

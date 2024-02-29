@@ -1,0 +1,59 @@
+@startuml
+' Define the P2PNetwork class that orchestrates the network operations
+class P2PNetwork {
+}
+
+' Define interfaces for the GossipProtocol and PublishSubscribeProtocol
+interface GossipProtocol {
+    +gossipMessage(message: Message): void
+    +receiveMessage(message: Message): void
+}
+
+interface PublishSubscribeProtocol {
+    +publish(topic: string, message: Message): void
+    +subscribe(topic: string, listener: Listener): void
+    +unsubscribe(topic: string, listener: Listener): void
+}
+
+' Define the Listener interface for handling received messages
+interface Listener {
+    +onMessageReceived(message: Message): void
+}
+
+' Define the Node class representing each peer in the network
+class Node {
+    +id: string
+    +connect(peer: Node): void
+    +disconnect(peer: Node): void
+    +sendMessage(message: Message): void
+    +onMessageReceived(message: Message): void
+}
+
+' Define the Message class for message propagation
+class Message {
+    +id: string
+    +type: string
+    +payload: string
+    +timestamp: datetime
+}
+
+' Relationships
+P2PNetwork ..> Node : "Contains"
+Node ..> GossipProtocol : "Implements <<Gossip>>"
+Node ..> PublishSubscribeProtocol : "Implements <<Pub/Sub>>"
+Node ..> Listener : "Is-a"
+PublishSubscribeProtocol ..> Listener : "Notifies"
+
+' Note on protocols usage
+note right of GossipProtocol
+  GossipProtocol is used for spreading
+  messages like transactions and consensus
+  information efficiently across the network.
+end note
+
+note right of PublishSubscribeProtocol
+  PublishSubscribeProtocol allows nodes to
+  subscribe to specific topics of interest for
+  efficient message filtering and processing.
+end note
+@enduml
